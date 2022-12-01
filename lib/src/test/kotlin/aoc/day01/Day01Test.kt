@@ -15,12 +15,24 @@ class Day01Test {
     )
 
     @Test
-    fun example1() {
+    fun example1_part1() {
         assertThat(largestGroupSum(example1)).isEqualTo(24_000)
+    }
+
+    @Test
+    fun example1_part2() {
+        assertThat(topSums(example1).subList(0, 3))
+            .containsExactly(24_000, 11_000, 10_000)
+            .inOrder()
     }
 
     @Test
     fun part1() {
         assertThat(part1(input)).isEqualTo(75_501)
+    }
+
+    @Test
+    fun part2() {
+        assertThat(part2(input)).isEqualTo(215_594)
     }
 }
