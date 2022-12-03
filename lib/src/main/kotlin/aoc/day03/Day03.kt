@@ -35,4 +35,11 @@ fun misplacedItem(rucksack: String): Char {
     return getOnlyElement(firstCompartment.intersect(secondCompartment))
 }
 
+fun badge(group: List<String>): Char {
+    require(group.size % 3 == 0)
+    return getOnlyElement(group.map(String::toSet).reduce(Set<Char>::intersect))
+}
+
 fun part1(input: String): Int = parse(input).sumOf { misplacedItem(it).priority() }
+
+fun part2(input: String): Int = parse(input).chunked(3).sumOf { badge(it).priority() }

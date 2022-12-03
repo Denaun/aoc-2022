@@ -22,8 +22,18 @@ class Day03Test {
     }
 
     @Test
+    fun example1_part2() {
+        assertThat(example1.chunked(3).map { badge(it) }).containsExactly('r', 'Z').inOrder()
+    }
+
+    @Test
     fun part1() {
         assertThat(part1(input)).isEqualTo(8_109)
+    }
+
+    @Test
+    fun part2() {
+        assertThat(part2(input)).isEqualTo(2_738)
     }
 }
 
