@@ -3,7 +3,6 @@ package aoc.day02
 import aoc.AocGrammar
 import com.github.h0tk3y.betterParse.combinators.asJust
 import com.github.h0tk3y.betterParse.combinators.or
-import com.github.h0tk3y.betterParse.combinators.separatedTerms
 import com.github.h0tk3y.betterParse.grammar.parseToEnd
 import com.github.h0tk3y.betterParse.lexer.literalToken
 
@@ -21,7 +20,7 @@ object Day02Grammar : AocGrammar<List<Pair<Shape, Unknown>>>() {
     private val rhs by ((xToken asJust Unknown.X) or (yToken asJust Unknown.Y) or (zToken asJust Unknown.Z))
     private val match by separatedPair(lhs, spaceToken, rhs)
 
-    override val rootParser by separatedTerms(match, eolToken).eolTerminated()
+    override val rootParser by lineList(match)
 }
 
 fun parse(data: String): List<Pair<Shape, Unknown>> {
