@@ -18,7 +18,14 @@ abstract class AocGrammar<out T> : Grammar<T>() {
     protected inline fun <reified U> lineList(element: Parser<U>): Parser<List<U>> =
         separatedTerms(element, eolToken).eolTerminated()
 
+    protected inline fun <reified U, reified V, W> separatedPair(
+        lhs: Parser<U>,
+        sep: Parser<*>,
+        rhs: Parser<V>,
+        crossinline biTransform: (U, V) -> W,
+    ): Parser<W> = (lhs and skip(sep) and rhs) map { biTransform(it.t1, it.t2) }
+
     protected inline fun <reified U, reified V> separatedPair(
         lhs: Parser<U>, sep: Parser<*>, rhs: Parser<V>
-    ): Parser<Pair<U, V>> = (lhs and skip(sep) and rhs) map { Pair(it.t1, it.t2) }
+    ): Parser<Pair<U, V>> = separatedPair(lhs, sep, rhs, ::Pair)
 }
