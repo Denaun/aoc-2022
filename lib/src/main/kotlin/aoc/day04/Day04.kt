@@ -21,5 +21,9 @@ fun parse(data: String): List<Pair<Range<Int>, Range<Int>>> = Day04Grammar.parse
 fun isFullOverlap(first: Range<Int>, second: Range<Int>): Boolean =
     first.encloses(second) || second.encloses(first)
 
+fun isOverlap(first: Range<Int>, second: Range<Int>): Boolean = first.isConnected(second)
+
 fun part1(input: String): Int =
     parse(input).count { (first, second) -> isFullOverlap(first, second) }
+
+fun part2(input: String): Int = parse(input).count { (first, second) -> isOverlap(first, second) }

@@ -22,7 +22,17 @@ class Day04Test {
     }
 
     @Test
+    fun example1_part2() {
+        assertThat(example1.count { (lhs, rhs) -> isOverlap(lhs, rhs) }).isEqualTo(4)
+    }
+
+    @Test
     fun part1() {
         assertThat(part1(input)).isEqualTo(556)
+    }
+
+    @Test
+    fun part2() {
+        assertThat(part2(input)).isEqualTo(876)
     }
 }
