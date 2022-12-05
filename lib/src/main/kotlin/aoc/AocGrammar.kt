@@ -8,7 +8,7 @@ import com.github.h0tk3y.betterParse.parser.Parser
 
 abstract class AocGrammar<out T> : Grammar<T>() {
     protected val eolToken by literalToken("\n")
-    private val numberToken by regexToken("\\d+")
+    protected val numberToken by regexToken("\\d+")
     protected val spaceToken by literalToken(" ")
 
     protected val numberParser by numberToken use { text.toInt() }
