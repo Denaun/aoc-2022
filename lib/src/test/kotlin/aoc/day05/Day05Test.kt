@@ -39,13 +39,13 @@ class Day05Test {
     @Test
     fun example1_part1() {
         assertThat(
-            listOf(
-                Step(1, 1, 0),
-                Step(3, 0, 2),
-                Step(2, 1, 0),
-                Step(1, 0, 1),
-            ).execute(
+            CrateMover9000().execute(
                 listOf(
+                    Step(1, 1, 0),
+                    Step(3, 0, 2),
+                    Step(2, 1, 0),
+                    Step(1, 0, 1),
+                ), listOf(
                     listOf(Crate('Z'), Crate('N')),
                     listOf(Crate('M'), Crate('C'), Crate('D')),
                     listOf(Crate('P')),
@@ -59,7 +59,34 @@ class Day05Test {
     }
 
     @Test
+    fun example1_part2() {
+        assertThat(
+            CrateMover9001().execute(
+                listOf(
+                    Step(1, 1, 0),
+                    Step(3, 0, 2),
+                    Step(2, 1, 0),
+                    Step(1, 0, 1),
+                ), listOf(
+                    listOf(Crate('Z'), Crate('N')),
+                    listOf(Crate('M'), Crate('C'), Crate('D')),
+                    listOf(Crate('P')),
+                )
+            )
+        ).containsExactly(
+            listOf(Crate('M')),
+            listOf(Crate('C')),
+            listOf(Crate('P'), Crate('Z'), Crate('N'), Crate('D')),
+        ).inOrder()
+    }
+
+    @Test
     fun part1() {
         assertThat(part1(input)).isEqualTo("DHBJQJCCW")
+    }
+
+    @Test
+    fun part2() {
+        assertThat(part2(input)).isEqualTo("WJVRLSJJT")
     }
 }
