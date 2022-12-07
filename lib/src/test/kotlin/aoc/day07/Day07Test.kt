@@ -42,18 +42,28 @@ class Day07Test {
                 File("k", 72_14_296),
             )
         ),
-    )
+    ).toFileSystem()
 
     @Test
     fun example1_part1() {
-        val fileSystem = example1.toFileSystem()
-        assertThat(directories(fileSystem).filter { it.second <= 100_000 }.toMap()).containsExactly(
+        assertThat(directories(example1).filter { it.second <= 100_000 }.toMap()).containsExactly(
             "e", 584, "a", 94_853
         )
     }
 
     @Test
+    fun example1_part2() {
+        assertThat(directories(example1).filter { it.second >= 8_381_165 }
+            .minOf { it.second }).isEqualTo(24_933_642)
+    }
+
+    @Test
     fun part1() {
         assertThat(part1(input)).isEqualTo(1_783_610)
+    }
+
+    @Test
+    fun part2() {
+        assertThat(part2(input)).isEqualTo(4_370_655)
     }
 }
