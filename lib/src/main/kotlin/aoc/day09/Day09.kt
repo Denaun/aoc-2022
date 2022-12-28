@@ -2,17 +2,20 @@ package aoc.day09
 
 import kotlin.math.abs
 
-fun part1(input: String): Int = simulate(parse(input)).toSet().size
+fun part1(input: String): Int = simulate(parse(input), 2).size
 
-fun simulate(motions: List<Motion>): List<Coordinate> {
-    var head = Coordinate(0, 0)
-    var tail = head
-    val tailPositions = mutableListOf(tail)
+fun part2(input: String): Int = simulate(parse(input), 10).size
+
+fun simulate(motions: List<Motion>, numKnots: Int): Set<Coordinate> {
+    require(numKnots >= 1)
+    var knots = List(numKnots) { Coordinate(0, 0) }
+    val tailPositions = mutableSetOf(knots.last())
     for (motion in motions) {
         for (step in 0 until motion.steps) {
-            head = head.move(motion.direction)
-            tail = tail.follow(head)
-            tailPositions.add(tail)
+            knots = knots.drop(1)
+                .runningFold(knots.first().move(motion.direction))
+                { prev, next -> next.follow(prev) }
+            tailPositions.add(knots.last())
         }
     }
     return tailPositions
