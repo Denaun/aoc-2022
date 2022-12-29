@@ -1,11 +1,28 @@
 package aoc.day11
 
-fun part1(input: String): Int =
-    monkeyBusinesses(parse(input), 20).sortedDescending().take(2).reduce(Int::times)
+fun part1(input: String): Long =
+    monkeyBusiness(simulateCalmly(parse(input), 20))
 
-fun monkeyBusinesses(monkeys: List<Monkey>, turns: Int): List<Int> {
-    val mutableMonkeys = monkeys.map(Monkey::toMutableMonkey)
-    val businesses = MutableList(monkeys.size) { 0 }
+fun part2(input: String): Long =
+    monkeyBusiness(simulateStressfully(parse(input), 10_000))
+
+
+fun monkeyBusiness(numInspections: List<Int>): Long = numInspections
+    .sortedDescending()
+    .take(2)
+    .map(Int::toLong)
+    .reduce(Long::times)
+
+fun simulateCalmly(monkeys: List<Monkey>, turns: Int): List<Int> =
+    simulate(monkeys.map(Monkey::toMutableRelievingMonkey), turns)
+
+
+fun simulateStressfully(monkeys: List<Monkey>, turns: Int): List<Int> =
+    simulate(monkeys.map(Monkey::toMutableUnrelentingMonkey), turns)
+
+
+fun simulate(mutableMonkeys: List<MutableMonkey>, turns: Int): List<Int> {
+    val businesses = MutableList(mutableMonkeys.size) { 0 }
     repeat(turns) {
         for ((index, monkey) in mutableMonkeys.withIndex()) {
             businesses[index] += monkey.items.size
