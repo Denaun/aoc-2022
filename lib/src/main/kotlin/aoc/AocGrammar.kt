@@ -28,4 +28,8 @@ abstract class AocGrammar<out T> : Grammar<T>() {
     protected inline fun <reified U, reified V> separatedPair(
         lhs: Parser<U>, sep: Parser<*>, rhs: Parser<V>
     ): Parser<Pair<U, V>> = separatedPair(lhs, sep, rhs, ::Pair)
+
+    protected inline fun <reified U> surrounded(
+        prefix: Parser<*>, parser: Parser<U>, suffix: Parser<*>
+    ): Parser<U> = skip(prefix) and parser and skip(suffix)
 }
