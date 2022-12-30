@@ -13,11 +13,21 @@ class Day14Test {
 
     @Test
     fun example1_part1() {
-        assertThat(simulateCave(example1)).isEqualTo(24)
+        assertThat(simulateCave(example1, ::simulateFloorless)).isEqualTo(24)
+    }
+
+    @Test
+    fun example1_part2() {
+        assertThat(simulateCave(example1, ::simulateFloorful)).isEqualTo(93)
     }
 
     @Test
     fun part1() {
         assertThat(part1(input)).isEqualTo(618)
+    }
+
+    @Test
+    fun part2() {
+        assertThat(part2(input)).isEqualTo(26_358)
     }
 }
