@@ -42,7 +42,17 @@ class Day13Test {
     }
 
     @Test
+    fun example1_part2() {
+        assertThat(decoderKey(example1.flatten())).isEqualTo(140)
+    }
+
+    @Test
     fun part1() {
         assertThat(part1(input)).isEqualTo(5_330)
+    }
+
+    @Test
+    fun part2() {
+        assertThat(part2(input)).isEqualTo(27_648)
     }
 }
