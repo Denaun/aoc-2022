@@ -13,7 +13,7 @@ fun part1(input: String): Int = surelyEmptyPositions(parse(input), 2_000_000L).a
     .sumOf { ContiguousSet.create(it, longs()).size }
 
 fun part2(input: String): Long {
-    val distressBeacon = findDistressBeacon(parse(input), 4_000_000L)
+    val distressBeacon = findDistressBeacon(parse(input), 4_000_000L)!!
     return distressBeacon.x * 4_000_000L + distressBeacon.y
 }
 
@@ -23,13 +23,13 @@ fun surelyEmptyPositions(readings: List<Reading>, row: Long): RangeSet<Long> {
     return result
 }
 
-fun findDistressBeacon(readings: List<Reading>, maxCoordinate: Long): Position {
+fun findDistressBeacon(readings: List<Reading>, maxCoordinate: Long): Position? {
     val (row, possibleXs) = (0L..maxCoordinate).asSequence().map { row ->
         val possibleXs = scannedRanges(readings, row).complement()
         possibleXs.remove(Range.lessThan(0))
         possibleXs.remove(Range.greaterThan(maxCoordinate))
         row to possibleXs
-    }.find { !it.second.isEmpty }!!
+    }.find { !it.second.isEmpty } ?: return null
     return Position(ContiguousSet.create(possibleXs.span(), longs()).single(), row)
 }
 
