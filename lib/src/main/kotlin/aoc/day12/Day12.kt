@@ -7,19 +7,37 @@ typealias HeightMap = List<List<Char>>
 
 fun part1(input: String): Int = shortestPath(parse(input))!!
 
-fun shortestPath(heightMap: HeightMap): Int? {
-    val toVisit = mutableListOf(findStart(heightMap))
+fun part2(input: String): Int = mostScenicPath(parse(input))!!
+
+fun shortestPath(heightMap: HeightMap): Int? = bfs(
+    findFirst(heightMap, START),
+    isEnd = { heightMap[it] == END },
+    neighbors = { it.uphillNeighbors(heightMap) },
+)
+
+fun mostScenicPath(heightMap: HeightMap): Int? = bfs(
+    findFirst(heightMap, END),
+    isEnd = { heightMap[it] == 'a' },
+    neighbors = { it.downhillNeighbors(heightMap) },
+)
+
+fun bfs(
+    start: Coordinate,
+    isEnd: (Coordinate) -> Boolean,
+    neighbors: (Coordinate) -> List<Coordinate>,
+): Int? {
+    val toVisit = mutableListOf(start)
     val visited = mutableSetOf<Coordinate>()
     var steps = 0
     while (toVisit.isNotEmpty()) {
         repeat(toVisit.size) {
             val current = toVisit.removeFirst()
-            if (heightMap[current] == END) {
+            if (isEnd(current)) {
                 return steps
             }
             if (!visited.contains(current)) {
                 visited.add(current)
-                toVisit.addAll(current.visitableNeighbors(heightMap))
+                toVisit.addAll(neighbors(current))
             }
         }
         steps += 1
@@ -36,17 +54,24 @@ data class Coordinate(val row: Int, val column: Int) {
         Coordinate(row, column + 1),
     )
 
-    fun visitableNeighbors(heightMap: HeightMap): List<Coordinate> = neighbors()
+    private fun visitableNeighbors(heightMap: HeightMap): List<Coordinate> = neighbors()
         .filter {
             0 <= it.row && it.row < heightMap.size &&
-                    0 <= it.column && it.column < heightMap[it.row].size &&
-                    height(heightMap[it]) - height(heightMap[this]) <= 1
+                    0 <= it.column && it.column < heightMap[it.row].size
         }
+
+    fun uphillNeighbors(heightMap: HeightMap): List<Coordinate> =
+        visitableNeighbors(heightMap)
+            .filter { height(heightMap[it]) - height(heightMap[this]) <= 1 }
+
+    fun downhillNeighbors(heightMap: HeightMap): List<Coordinate> =
+        visitableNeighbors(heightMap)
+            .filter { height(heightMap[this]) - height(heightMap[it]) <= 1 }
 }
 
-fun findStart(heightMap: HeightMap): Coordinate {
-    val row = heightMap.indexOfFirst { it.contains(START) }
-    val column = heightMap[row].indexOf(START)
+fun findFirst(heightMap: HeightMap, cell: Char): Coordinate {
+    val row = heightMap.indexOfFirst { it.contains(cell) }
+    val column = heightMap[row].indexOf(cell)
     return Coordinate(row, column)
 }
 
