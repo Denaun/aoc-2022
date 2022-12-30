@@ -15,7 +15,7 @@ object Day15Grammar : AocGrammar<List<Reading>>() {
     private val yToken by literalToken(", y=")
     private val minusToken by literalToken("-")
 
-    private val signedParser by -minusToken * numberParser map { -it } or numberParser
+    private val signedParser by (-minusToken * numberParser map { -it } or numberParser).map(Int::toLong)
     private val positionParser by -xToken * signedParser * -yToken * signedParser map { (x, y) ->
         Position(x, y)
     }

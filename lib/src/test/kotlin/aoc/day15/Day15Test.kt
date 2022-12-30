@@ -32,13 +32,23 @@ class Day15Test {
 
     @Test
     fun example1_part1() {
-        assertThat(surelyEmptyPositions(example1, 10).asRanges()).containsExactly(
-            Range.closedOpen(-2, 2), Range.openClosed(2, 24)
+        assertThat(surelyEmptyPositions(example1, 10L).asRanges()).containsExactly(
+            Range.closedOpen(-2L, 2L), Range.openClosed(2L, 24L)
         )
+    }
+
+    @Test
+    fun example1_part2() {
+        assertThat(findDistressBeacon(example1, 20L)).isEqualTo(Position(14L, 11L))
     }
 
     @Test
     fun part1() {
         assertThat(part1(input)).isEqualTo(4_717_631)
+    }
+
+    @Test
+    fun part2() {
+        assertThat(part2(input)).isEqualTo(13_197_439_355_220L)
     }
 }
