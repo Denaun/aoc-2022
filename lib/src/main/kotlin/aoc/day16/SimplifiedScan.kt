@@ -14,7 +14,7 @@ fun Scan.simplify(initialValve: Valve): SimplifiedScan {
     val usefulFlowRates = flowRates.filterValues { it > 0 }
     val usefulDistances = tunnels.nodes().filter { it == initialValve || it in usefulFlowRates }
         .associateWith { distances(it).filterKeys(usefulFlowRates::containsKey) }
-    val flattenedTunnels = ValueGraphBuilder.undirected().immutable<Valve, Int>()
+    val flattenedTunnels = ValueGraphBuilder.directed().immutable<Valve, Int>()
     for ((start, distances) in usefulDistances) {
         for ((end, distance) in distances) {
             flattenedTunnels.putEdgeValue(start, end, distance)

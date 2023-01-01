@@ -24,11 +24,21 @@ class Day16Test {
 
     @Test
     fun example1_part1() {
-        assertThat(maximizeReleasedPressure(example1, Valve("AA"), 30)).isEqualTo(1_651)
+        assertThat(maximizeSingleReleasedPressure(example1, Valve("AA"), 30)).isEqualTo(1_651)
+    }
+
+    @Test
+    fun example1_part2() {
+        assertThat(maximizeDoubleReleasedPressure(example1, Valve("AA"), 26)).isEqualTo(1_707)
     }
 
     @Test
     fun part1() {
         assertThat(part1(input)).isEqualTo(1_986)
+    }
+
+    @Test
+    fun part2() {
+        assertThat(part2(input)).isEqualTo(2_464)
     }
 }

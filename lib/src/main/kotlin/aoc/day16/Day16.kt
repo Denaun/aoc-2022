@@ -3,10 +3,13 @@
 package aoc.day16
 
 import java.util.*
+import kotlin.math.max
 
-fun part1(input: String): Int = maximizeReleasedPressure(parse(input), Valve("AA"), 30)!!
+fun part1(input: String): Int = maximizeSingleReleasedPressure(parse(input), Valve("AA"), 30)!!
 
-fun maximizeReleasedPressure(scan: Scan, initialValve: Valve, minutes: Int): Int? {
+fun part2(input: String): Int = maximizeDoubleReleasedPressure(parse(input), Valve("AA"), 26)
+
+fun maximizeSingleReleasedPressure(scan: Scan, initialValve: Valve, minutes: Int): Int? {
     val simplifiedScan = scan.simplify(initialValve)
     val states = PriorityQueue(compareByDescending(simplifiedScan::upperBoundReleasedPressure))
     states.add(initialState(initialValve, minutes))
@@ -21,6 +24,22 @@ fun maximizeReleasedPressure(scan: Scan, initialValve: Valve, minutes: Int): Int
     }
     return null
 }
+
+fun maximizeDoubleReleasedPressure(scan: Scan, initialValve: Valve, minutes: Int): Int {
+    val simplifiedScan = scan.simplify(initialValve)
+    val solutions = mutableMapOf<Set<Valve>, Int>()
+    val toVisit = mutableListOf(initialState(initialValve, minutes))
+    while (toVisit.isNotEmpty()) {
+        val state = toVisit.removeFirst()
+        solutions.merge(state.openValves, state.busyWait(simplifiedScan).releasedPressure, ::max)
+        toVisit.addAll(simplifiedScan.tunnels.adjacentNodes(state.valve)
+            .mapNotNull { state.moveToAndOpen(it, simplifiedScan) })
+    }
+    return solutions.maxOf { (valves, releasedPressure) ->
+        solutions.filterKeys { (valves intersect it).isEmpty() }.values.maxOf(releasedPressure::plus)
+    }
+}
+
 
 fun SimplifiedScan.upperBoundReleasedPressure(state: State): Int {
     var releasedPressure = state.releasedPressure
